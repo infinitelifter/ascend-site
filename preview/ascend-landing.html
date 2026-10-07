@@ -190,9 +190,13 @@ p{max-width:65ch}
 form{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:28px;display:grid;gap:14px;max-width:560px;position:relative}
 label{display:grid;gap:6px;font-size:13px;font-weight:700;color:var(--muted)}
 input,select{height:52px;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--ink);padding:0 14px;font-size:16px;font-family:inherit}
+textarea{border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--ink);padding:12px 14px;font-size:16px;font-family:inherit;line-height:1.45;resize:vertical;min-height:110px}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.consent{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--muted);font-weight:500}
-.consent input{height:auto;width:18px;margin-top:3px}
+.consent{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--muted);font-weight:500;padding:10px 12px;border:1px solid transparent;border-radius:10px;margin:0 -12px}
+.consent input{height:auto;width:18px;margin-top:3px;accent-color:var(--accent);flex:0 0 auto}
+.consent.missing{border-color:var(--accent);color:var(--accent);background:color-mix(in srgb,var(--accent) 6%,transparent)}
+.consent .need{display:none;font-weight:700}
+.consent.missing .need{display:block;margin-top:4px}
 .done{display:none;background:var(--slab);color:var(--slab-ink);border-radius:18px;padding:22px;font-size:15px}
 .done.show{display:block}
 footer{padding-block:40px 60px;border-top:1px solid var(--line);font-size:13px;color:var(--faint)}
@@ -341,8 +345,9 @@ footer .legal{margin-top:14px;line-height:1.6}
       <label>Days a week<select id="f-days" name="days"><option>3</option><option selected>4</option><option>5</option></select></label>
     </div>
     <label>Best squat · bench · deadlift (kg)<input id="f-lifts" name="lifts" placeholder="160 · 110 · 200"></label>
+    <label>About you and your training<textarea id="f-about" name="about" rows="4" maxlength="1200" placeholder="How long you have lifted, what you are after this year, injuries or anything the coach should know."></textarea></label>
     <label style="position:absolute;left:-9999px" aria-hidden="true">Website<input id="f-website" name="website" tabindex="-1" autocomplete="off"></label>
-    <label class="consent"><input type="checkbox" id="f-consent" required><span>I am 18 or older, cleared to train, and I understand Ascend gives training guidance, not medical advice.</span></label>
+    <label class="consent" id="consent-row"><input type="checkbox" id="f-consent" required><span>I am 18 or older, cleared to train, and I understand Ascend gives training guidance, not medical advice.<span class="need">Tick this to send the application.</span></span></label>
     <button class="lbtn" type="submit">Send my application</button>
     <div class="muted" id="form-err" style="font-size:13px;color:var(--accent);display:none"></div>
     <div class="muted" style="font-size:13px">Or write directly: <b id="mail">hello@ascend.coach</b> <button type="button" class="lbtn ghost" style="height:34px;padding:0 12px;font-size:12px;margin-left:8px" id="copy">Copy</button></div>
@@ -359,16 +364,19 @@ footer .legal{margin-top:14px;line-height:1.6}
 
 <script>
 (function(){
-  var form=document.getElementById('apply-form'), done=document.getElementById('done');
+  var form=document.getElementById('apply-form'), done=document.getElementById('done'), opened=Date.now();
+  document.getElementById('f-consent').addEventListener('change',function(){document.getElementById('consent-row').classList.toggle('missing',!this.checked);});
   form.addEventListener('submit',function(e){
     e.preventDefault();
     var ok=true;
-    ['f-name','f-contact','f-consent'].forEach(function(id){var el=document.getElementById(id); var v=el.type==='checkbox'?el.checked:el.value.trim(); el.style.borderColor=v?'':'var(--accent)'; if(!v) ok=false;});
+    ['f-name','f-contact'].forEach(function(id){var el=document.getElementById(id); var v=el.value.trim(); el.style.borderColor=v?'':'var(--accent)'; if(!v) ok=false;});
+    var consent=document.getElementById('f-consent'), row=document.getElementById('consent-row');
+    row.classList.toggle('missing',!consent.checked); if(!consent.checked) ok=false;
     if(!ok) return;
     var btn=form.querySelector('button[type=submit]'), err=document.getElementById('form-err');
     btn.disabled=true; btn.textContent='Sending'; err.style.display='none';
     var g=function(id){return document.getElementById(id).value.trim();};
-    var payload={name:g('f-name'),contact:g('f-contact'),gym:g('f-gym'),days:g('f-days'),lifts:g('f-lifts'),website:g('f-website'),consent:document.getElementById('f-consent').checked};
+    var payload={name:g('f-name'),contact:g('f-contact'),gym:g('f-gym'),days:g('f-days'),lifts:g('f-lifts'),about:g('f-about'),website:g('f-website'),consent:consent.checked,t:opened};
     fetch('/api/apply',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
       .then(function(r){return r.json().catch(function(){return {ok:r.ok};});})
       .then(function(j){ if(!j.ok) throw new Error(j.error||'Could not send.'); form.hidden=true; done.classList.add('show'); done.scrollIntoView({behavior:'smooth',block:'center'}); })
