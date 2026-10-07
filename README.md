@@ -6,6 +6,7 @@ The founding-member landing page for Ascend, a strength coaching app. Static HTM
 - `build/*.py` other than `landing.py` are a copy of the app's design-v5 mockup builder (`ascend/design-v5/build`); the phones on the page are the app's own frames. When the app's frames change, copy those files over and rebuild.
 - `preview/ascend-landing.html` is the same page without the document skeleton, for publishing as a Claude artifact.
 - `api/apply.js` receives the application form and emails it through Resend.
+- Icons (`favicon.svg`, `favicon-32.png`, `apple-touch-icon.png`, `icon-*.png`), `og.png` (link preview), `robots.txt`, `sitemap.xml`, `site.webmanifest`. The site URL is set once as `SITE` in `build/landing.py` and repeated in `robots.txt` / `sitemap.xml`; change all three when the domain changes.
 
 ## Deploy (Vercel)
 ```

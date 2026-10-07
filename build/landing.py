@@ -3,7 +3,7 @@
 # app's v5 phone frames (build/*.py are a copy of ascend/design-v5/build — when
 # the app's frames change, copy them over and rebuild), so the page looks like
 # the app. Run: python3 build/landing.py → index.html + preview/.
-import sys, os, re, html as H
+import sys, os, re, json, html as H
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from css import CSS as APP_CSS
 from lib import *
@@ -335,6 +335,7 @@ root = os.path.join(here, '..')
 os.makedirs(os.path.join(root, 'preview'), exist_ok=True)
 open(os.path.join(root, 'preview', 'ascend-landing.html'), 'w').write(page)
 # 2) index.html — the deployable site: a complete document for Vercel
+SITE = "https://ascendstrength.app"  # change when the domain changes; also in robots.txt and sitemap.xml
 DESC = "A strength coach in your pocket: your program written for you, every lift watched, every meal read, adjusted weekly. 20 founding places."
 standalone = ('<!doctype html><html lang="en"><head><meta charset="utf-8">'
   '<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">'
@@ -342,6 +343,11 @@ standalone = ('<!doctype html><html lang="en"><head><meta charset="utf-8">'
   '<meta property="og:title" content="Ascend: stop thinking about training. Start being coached.">'
   f'<meta property="og:description" content="{DESC}"><meta property="og:type" content="website">'
   '<meta name="theme-color" content="#F4EFE4">'
+  '<link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">'
+  '<link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="manifest" href="/site.webmanifest">'
+  + f'<link rel="canonical" href="{SITE}/"><meta property="og:url" content="{SITE}/"><meta property="og:image" content="{SITE}/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">'
+  + '<meta name="twitter:card" content="summary_large_image"><meta property="og:site_name" content="Ascend"><meta name="robots" content="index,follow">'
+  + '<script type="application/ld+json">' + json.dumps({"@context":"https://schema.org","@type":"SoftwareApplication","name":"Ascend","applicationCategory":"HealthApplication","operatingSystem":"iOS","description":DESC,"url":SITE,"offers":[{"@type":"Offer","name":"Founding place","price":"50","priceCurrency":"EUR","billingIncrement":"P1M","availability":"https://schema.org/LimitedAvailability"},{"@type":"Offer","name":"Standard","price":"100","priceCurrency":"EUR","billingIncrement":"P1M"}],"publisher":{"@type":"Organization","name":"Full Canvas Digital s.r.o.","address":{"@type":"PostalAddress","addressLocality":"Prague","addressCountry":"CZ"}}}) + '</script>'
   + page.replace('<title>Ascend Founding Members</title>', '<title>Ascend, a strength coach in your pocket</title>', 1)
   + '</body></html>')
 standalone = standalone.replace('</style>\n\n<div class="wrap">', '</style></head><body>\n<div class="wrap">', 1)
