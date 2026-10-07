@@ -97,7 +97,7 @@ p{max-width:65ch}
 .price{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:30px;align-items:stretch}
 .price .lcard{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:30px;display:flex;flex-direction:column;gap:14px;min-width:0}
 .price .lcard.on{background:var(--slab);color:var(--slab-ink);border-color:var(--slab)}
-.price .lcard.on .kicker{color:var(--accent-ink);opacity:.9}
+.price .lcard.on .kicker{color:var(--slab-muted)}
 .price .lcard.on .muted{color:var(--slab-muted)}
 .price .lcard.on li::before{background:#A05257}
 .price .lcard.on>div[style*="border:1px solid"]{border-color:var(--slab-line)!important}
@@ -253,7 +253,7 @@ page = f'''<title>Ascend Founding Members</title>
         <li>Your feedback visibly shapes the next version</li>
         <li>Cancel any month, keep your history</li>
       </ul>
-      <a class="lbtn" href="#apply" style="background:var(--accent-ink);color:var(--slab)">Ask for a place</a>
+      <a class="lbtn" href="#apply" style="background:var(--slab-ink);color:var(--slab)">Ask for a place</a>
     </div>
     <div class="lcard">
       <div class="kicker">After the founding block</div>
