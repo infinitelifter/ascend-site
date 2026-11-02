@@ -197,7 +197,7 @@ page = f'''<title>Ascend Founding Members</title>
       <ul>
         <li>Several training goals and methodologies: strength, size, a meet to peak for, a comeback after an injury. The coach picks and adapts.</li>
         <li>Loads come from your training max, never from how you feel today. No RPE guesswork.</li>
-        <li>A max moves at most 5 kg a week, and only when a logged top set earns it.</li>
+        <li>A max moves at most 5 kg (about 10 lb) a week, and only when a logged top set earns it.</li>
         <li>Miss a day and the week reschedules itself. Report pain and the next sessions swap around it. Get sick and the week compresses, then re-enters gently.</li>
         <li>Changes land on upcoming sessions only. Your history is never rewritten.</li>
       </ul>
@@ -223,7 +223,7 @@ page = f'''<title>Ascend Founding Members</title>
   <h2>Twenty people who train four days a week and want to stop managing it.</h2>
   <div class="who">
     <div class="col"><div class="kicker acc">Yes, if</div><ul>
-      <li>{check()}You squat, bench, deadlift or press and track your lifts in kg.</li>
+      <li>{check()}You squat, bench, deadlift or press. Kilograms or pounds, your choice.</li>
       <li>{check()}You train in a gym with a barbell, three or four days a week, and will log every session.</li>
       <li>{check()}You have had a coach, or wanted one, and know what a good one is worth.</li>
       <li>{check()}You want one source of truth for training and food, not five apps.</li>
@@ -282,7 +282,7 @@ page = f'''<title>Ascend Founding Members</title>
       <label>Where you train<input id="f-gym" name="gym" placeholder="Gym, city"></label>
       <label>Days a week<select id="f-days" name="days"><option>3</option><option selected>4</option><option>5</option></select></label>
     </div>
-    <label>Best squat · bench · deadlift (kg)<input id="f-lifts" name="lifts" placeholder="160 · 110 · 200"></label>
+    <label>Best squat · bench · deadlift<input id="f-lifts" name="lifts" placeholder="160 · 110 · 200 kg, or in lb"></label>
     <label>About you and your training<textarea id="f-about" name="about" rows="4" maxlength="1200" placeholder="How long you have lifted, what you are after this year, injuries or anything the coach should know."></textarea></label>
     <label style="position:absolute;left:-9999px" aria-hidden="true">Website<input id="f-website" name="website" tabindex="-1" autocomplete="off"></label>
     <label class="consent" id="consent-row"><input type="checkbox" id="f-consent" required><span>I am 18 or older, cleared to train, and I understand Ascend gives training guidance, not medical advice.<span class="need">Tick this to send the application.</span></span></label>
