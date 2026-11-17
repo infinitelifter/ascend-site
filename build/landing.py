@@ -122,6 +122,7 @@ textarea{border:1px solid var(--line);border-radius:12px;background:var(--bg);co
 .consent{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--muted);font-weight:500;padding:10px 12px;border:1px solid transparent;border-radius:10px;margin:0 -12px}
 .consent input{height:auto;width:18px;margin-top:3px;accent-color:var(--accent);flex:0 0 auto}
 .consent.missing{border-color:var(--accent);color:var(--accent);background:color-mix(in srgb,var(--accent) 6%,transparent)}
+.consent a{color:inherit;text-decoration:underline;text-underline-offset:2px}
 .consent .need{display:none;font-weight:700}
 .consent.missing .need{display:block;margin-top:4px}
 .done{display:none;background:var(--slab);color:var(--slab-ink);border-radius:18px;padding:22px;font-size:15px}
@@ -129,6 +130,7 @@ textarea{border:1px solid var(--line);border-radius:12px;background:var(--bg);co
 footer{padding-block:40px 60px;border-top:1px solid var(--line);font-size:13px;color:var(--faint)}
 footer p{max-width:none}
 footer .legal{margin-top:14px;line-height:1.6}
+footer a{color:inherit;text-decoration:underline;text-underline-offset:2px}
 .phone{box-shadow:0 0 0 10px #1A1815,0 30px 60px rgba(33,30,25,.35)}
 @media (max-width:1100px){.four{grid-template-columns:1fr 1fr}}
 @media (max-width:860px){
@@ -285,7 +287,7 @@ page = f'''<title>Ascend Founding Members</title>
     <label>Best squat · bench · deadlift<input id="f-lifts" name="lifts" placeholder="160 · 110 · 200 kg, or in lb"></label>
     <label>About you and your training<textarea id="f-about" name="about" rows="4" maxlength="1200" placeholder="How long you have lifted, what you are after this year, injuries or anything the coach should know."></textarea></label>
     <label style="position:absolute;left:-9999px" aria-hidden="true">Website<input id="f-website" name="website" tabindex="-1" autocomplete="off"></label>
-    <label class="consent" id="consent-row"><input type="checkbox" id="f-consent" required><span>I am 18 or older, cleared to train, and I understand Ascend gives training guidance, not medical advice.<span class="need">Tick this to send the application.</span></span></label>
+    <label class="consent" id="consent-row"><input type="checkbox" id="f-consent" required><span>I am 18 or older, cleared to train, I understand Ascend gives training guidance, not medical advice, and I have read and accept the <a href="/terms" target="_blank" rel="noopener">training terms</a>.<span class="need">Tick this to send the application.</span></span></label>
     <button class="lbtn" type="submit">Send my application</button>
     <div class="muted" id="form-err" style="font-size:13px;color:var(--accent);display:none"></div>
     <div class="muted" style="font-size:13px">Or write directly: <b id="mail">hello@ascend.coach</b> <button type="button" class="lbtn ghost" style="height:34px;padding:0 12px;font-size:12px;margin-left:8px" id="copy">Copy</button></div>
@@ -296,7 +298,7 @@ page = f'''<title>Ascend Founding Members</title>
 <footer>
   <div class="brand" style="font-family:var(--display);font-weight:700;letter-spacing:.14em;text-transform:uppercase;display:flex;align-items:center;gap:10px">{mark(22)}Ascend</div>
   <p class="legal">Ascend is a training tool. It writes programs and adjusts them from the data you log; it does not diagnose, treat or replace advice from a physician or physiotherapist. Lifting heavy carries a risk of injury. Train within your ability, stop when something hurts, and get cleared by a doctor before starting if you have a condition or a recent injury. By using Ascend you accept the Terms of Use and the Health &amp; Safety acknowledgement shown in the app.</p>
-  <p class="legal">© 2026 Full Canvas Digital s.r.o., Prague · Terms · Privacy · Contact</p>
+  <p class="legal">© 2026 Full Canvas Digital s.r.o., Prague · <a href="/terms">Terms</a> · Privacy · Contact</p>
 </footer>
 </div>
 
@@ -331,11 +333,12 @@ page = f'''<title>Ascend Founding Members</title>
 '''
 here = os.path.dirname(os.path.abspath(__file__))
 root = os.path.join(here, '..')
-# 1) preview/ascend-landing.html — the Claude-artifact version (no document skeleton; the Artifact tool adds it)
-os.makedirs(os.path.join(root, 'preview'), exist_ok=True)
-open(os.path.join(root, 'preview', 'ascend-landing.html'), 'w').write(page)
-# 2) index.html — the deployable site: a complete document for Vercel
 SITE = "https://ascendstrength.app"  # change when the domain changes; also in robots.txt and sitemap.xml
+# 1) preview/ascend-landing.html — the Claude-artifact version (no document skeleton; the Artifact tool adds it).
+#    The artifact is not served from the site, so its /terms links are made absolute.
+os.makedirs(os.path.join(root, 'preview'), exist_ok=True)
+open(os.path.join(root, 'preview', 'ascend-landing.html'), 'w').write(page.replace('href="/terms"', f'href="{SITE}/terms"'))
+# 2) index.html — the deployable site: a complete document for Vercel
 DESC = "A strength coach in your pocket: your program written for you, every lift watched, every meal read, adjusted weekly. 20 founding places."
 standalone = ('<!doctype html><html lang="en"><head><meta charset="utf-8">'
   '<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">'
