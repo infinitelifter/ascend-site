@@ -1,7 +1,7 @@
 # Training terms and risk acknowledgement
 
 Last updated: 17 November 2026
-Operator: [OPERATOR LEGAL NAME, ID NUMBER, ADDRESS] ("Ascend", "we")
+Operator: Full Canvas Digital, operated by Ondrej Meszaros, [ID NUMBER, REGISTERED ADDRESS] ("Ascend", "we")
 
 Please read this before you train with Ascend. By creating an account or paying for a membership you confirm that you have read it and agree to it.
 

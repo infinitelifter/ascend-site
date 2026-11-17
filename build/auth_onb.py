@@ -43,7 +43,7 @@ def frames():
         f'<div style="display:flex;flex-direction:column;gap:10px;padding-bottom:30px">'
         f'{btn("Continue with Apple","charcoal",icon=APPLE)}{btn("Continue with Google","cream",icon=GOOGLE)}{btn("Continue with Email","ghost")}'
         f'<div style="text-align:center;font-size:12px;color:var(--faint);margin-top:12px;font-weight:500">Privacy · Terms</div></div>',
-        "As built, with three fixes: Privacy · Terms become links, the Apple/Google buttons keep their colour while busy and show the button shimmer instead of collapsing to bone with white dots, and the tagline sits a little tighter under the logo.", screen_style="padding-bottom:4px"))
+        "As built, with three fixes: Privacy · Terms become links, the Apple/Google buttons keep their colour while busy and show the button shimmer instead of collapsing to bone with white dots, and the tagline sits a little tighter under the logo. <b>v5.1:</b> The logo is warm — the brand file’s three neutral greys swapped for darkline · taupe · faint on light surfaces (shapes and layer opacities untouched; the brand file itself is unchanged).", screen_style="padding-bottom:4px"))
 
     # 02 email
     F.append(frame("s2", "02 · Email — create account, error state",
@@ -78,15 +78,33 @@ def frames():
         "Numerals move to Urbanist and gain the typed input from the maxes screen (tap the number, decimal keypad). <b>Sex is now required</b> — Continue stays disabled until it is picked, instead of failing seven screens later with a native alert. Height secondary rounding fixed (no more 5′12″)."))
 
     # 04b injury
-    F.append(frame("s4b", "04b · Onboarding 3 of 8 — injury detail (conditional)",
-        top(3) + head("Where, and what kind?", "Pick every area that applies. The plan avoids what it must and strengthens around it.").replace("margin-bottom:22px","margin-bottom:16px") +
-        f'<div class="label" style="margin-bottom:8px">Area</div><div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">{pill("Knee",True,style="height:32px;padding:0 13px;font-size:12px")}{pill("Lower back",True,style="height:32px;padding:0 13px;font-size:12px")}{pill("Shoulder",False,style="height:32px;padding:0 13px;font-size:12px")}{pill("Hip",False,style="height:32px;padding:0 13px;font-size:12px")}{pill("Elbow",False,style="height:32px;padding:0 13px;font-size:12px")}{pill("Wrist",False,style="height:32px;padding:0 13px;font-size:12px")}{pill("Ankle",False,style="height:32px;padding:0 13px;font-size:12px")}{pill("Neck",False,style="height:32px;padding:0 13px;font-size:12px")}</div>'
-        f'<div style="display:flex;flex-direction:column;gap:12px">'
+    SP = "font-size:12px;height:32px;padding:0 12px"   # small pill inside the area card
+    def sp(label, on=False): return pill(label, on, style=SP)
+    def collapsed(area, summary):
+        return (f'<div class="card" style="padding:14px 16px;display:flex;justify-content:space-between;align-items:center"><div style="font-size:15px;font-weight:700;white-space:nowrap;padding-right:10px">{area}</div>'
+                f'<div style="display:flex;align-items:center;gap:6px;font-size:13px;color:var(--faint);font-weight:600;text-align:right;line-height:1.35">{summary}{ic("chev-right",16,"#857D6A")}</div></div>')
+    knee_card = (
         f'<div class="card" style="padding:14px 16px;display:flex;flex-direction:column;gap:10px"><div style="display:flex;justify-content:space-between;align-items:center"><div style="font-size:15px;font-weight:700">Knee</div><div style="display:flex;gap:6px">{pill("Left",True,style="height:30px;padding:0 12px;font-size:11px")}{pill("Right",style="height:30px;padding:0 12px;font-size:11px")}</div></div>'
-        f'<div class="label-faint">Kind</div><div style="display:flex;gap:6px;flex-wrap:wrap">{pill("Ligament / meniscus",True,style="font-size:12px;height:32px;padding:0 12px")}{pill("Tendon pain",style="font-size:12px;height:32px;padding:0 12px")}{pill("Arthritis / joint wear",style="font-size:12px;height:32px;padding:0 12px")}{pill("General pain",style="font-size:12px;height:32px;padding:0 12px")}{pill("Replaced / surgery",style="font-size:12px;height:32px;padding:0 12px")}</div>'
-        f'<div class="label-faint">Status</div><div style="display:flex;gap:6px;flex-wrap:wrap">{pill("Current",style="font-size:12px;height:32px;padding:0 12px")}{pill("Past — healed",True,style="font-size:12px;height:32px;padding:0 12px")}{pill("Chronic — flares up",style="font-size:12px;height:32px;padding:0 12px")}</div></div>'
-        f'<div class="card" style="padding:14px 16px;display:flex;justify-content:space-between;align-items:center"><div style="font-size:15px;font-weight:700">Lower back</div><div style="display:flex;align-items:center;gap:6px;font-size:13px;color:var(--faint);font-weight:600">Disc issue · chronic{ic("chev-right",16,"#857D6A")}</div></div></div>' + cta("Continue"),
-        "Two small labels — <b>Kind</b> and <b>Status</b> — name the two pill rows that were visually identical. Title at 34 like every other step (was 28). Collapsed summaries get the chevron icon instead of a text “›”."))
+        f'<div class="label-faint">Kind</div><div style="display:flex;gap:6px;flex-wrap:wrap">{sp("Ligament / meniscus")}{sp("Cartilage damage")}{sp("Tendon pain")}{sp("Arthritis / joint wear")}{sp("Muscle weakness / atrophy")}{sp("General pain")}{sp("Broken bone / fracture",True)}{sp("Replaced / surgery")}</div>'
+        f'<div class="label-faint">Status</div><div style="display:flex;gap:6px;flex-wrap:wrap">{sp("Current")}{sp("Past — healed")}{sp("Healed — still limits me",True)}{sp("Chronic — flares up")}</div>'
+        f'<div class="label-faint">What does it limit now?</div><div style="display:flex;gap:6px;flex-wrap:wrap">{sp("Limited range",True)}{sp("Heavy loading")}{sp("Impact / speed work")}{sp("Unstable when tired")}{sp("This side is weaker",True)}</div>'
+        f'<div class="label" style="align-self:flex-end;color:var(--burgundy)">Done</div></div>')
+    lb_collapsed = collapsed("Lower back", "Disc issue · healed — still limits me · heavy loading")
+    F.append(frame("s4b", "04b · Onboarding 3 of 8 — injury detail (conditional)",
+        f'<div class="subtitle" style="margin:-4px 0 14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:.5">must and strengthens around it.</div>'
+        f'<div class="label" style="margin-bottom:8px">Area</div><div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">{pill("Knee",True,style="height:32px;padding:0 13px;font-size:12px")}{pill("Lower back",True,style="height:32px;padding:0 13px;font-size:12px")}{pill("Shoulder",False,style="height:32px;padding:0 13px;font-size:12px")}{pill("Hip",False,style="height:32px;padding:0 13px;font-size:12px")}{pill("Elbow",False,style="height:32px;padding:0 13px;font-size:12px")}{pill("Wrist",False,style="height:32px;padding:0 13px;font-size:12px")}{pill("Ankle",False,style="height:32px;padding:0 13px;font-size:12px")}{pill("Neck",False,style="height:32px;padding:0 13px;font-size:12px")}</div>'
+        f'<div style="display:flex;flex-direction:column;gap:12px">{knee_card}{lb_collapsed}</div>' + cta("Continue"),
+        "<b>Consequences, not history.</b> Three labels name the pill rows: <b>Kind</b> (now also fracture, muscle weakness / atrophy, cartilage damage — per-area matrix), <b>Status</b> (Current · Past — healed · <b>Healed — still limits me</b> · Chronic — flares up) and, for the two statuses that limit training today, <b>What does it limit now?</b> — Limited range · Heavy loading · Impact / speed work · Unstable when tired · This side is weaker (sided areas only). Multi-select; “Healed — still limits me” needs at least one. Each limit maps to one engine rule. A quiet burgundy <b>Done</b> collapses the card; the collapsed summary reads kind · status · limits. Drawn scrolled just past the title (rail, eyebrow “Private assessment”, title “Where, and what kind?” and subtitle sit above, exactly as on 04) so the whole open card fits; 04c is the end of the same scroll."))
+
+    # 04c injury — scrolled to the bottom: collapsed cards, the one free-text box, Continue
+    notes_box = (
+        f'<div style="margin-top:22px;display:flex;flex-direction:column;gap:10px"><div class="label">Anything else the coach should know</div>'
+        f'<div style="min-height:76px;border:1px solid var(--bone);border-radius:14px;background:var(--cream);padding:13px 16px;font-size:15px;font-weight:500;color:var(--faint);line-height:1.45">Optional. The coach reads this; it never changes your plan by itself.<br><br></div>'
+        f'<div class="meta num" style="text-align:right">0 / 300</div></div>')
+    F.append(frame("s4c", "04c · Onboarding 3 of 8 — injury detail, scrolled to the end",
+        f'<div style="display:flex;flex-direction:column;gap:12px;margin-top:-8px">{collapsed("Knee", "Broken bone / fracture · healed — still limits me · limited range, this side is weaker")}{lb_collapsed}</div>'
+        + notes_box + cta("Continue"),
+        "Same step, scrolled past the area cards. Both areas are complete and collapsed. Below them the one free-text box in the whole intake: <b>Anything else the coach should know</b> — three lines, 300 characters, a right-aligned counter, bone border on cream, the placeholder says what it is for. <b>Free text never changes the plan.</b> It is stored as <code>coach_notes</code>, shown back under Edit training profile in Settings (frame 23), and passed only to the note writers (coach review, swap suggestions) as voice context. The engine never reads it. Continue stays disabled until every selected area is complete."))
 
     # 05 goal
     F.append(frame("s5", "05 · Onboarding 4 of 8 — goal & gym",
@@ -147,5 +165,5 @@ def frames():
         f'<div class="subtitle" style="max-width:300px">Built from your experience, current strength, goals, schedule, equipment, and limitations.</div>'
         f'<div class="card" style="padding:14px 16px;text-align:left;width:100%;margin-top:6px"><div class="label-faint" style="margin-bottom:4px">Conjugate · 12 weeks · 4 days</div><div style="font-size:15px;font-weight:700">First session Monday — Max Effort Lower</div><div class="meta" style="margin-top:3px">Week 1 measures the lifts you left blank.</div></div></div>'
         f'{btn("See today’s training","burgundy",extra="margin-bottom:28px")}',
-        "<b>New screen</b> replacing the native “Your first training block is ready” alert. Same locked copy, plus one factual card: what was built and when it starts. Engine warnings (short peak, sport-support note) render as a second quiet card here instead of a “Heads up” alert."))
+        "<b>New screen</b> replacing the native “Your first training block is ready” alert. Same locked copy, plus one factual card: what was built and when it starts. Engine warnings (short peak, sport-support note) render as a second quiet card here instead of a “Heads up” alert. <b>v5.1:</b> The block arrives in turn — mark, headline, line, fact card, button — 80 ms apart. Every Continue in onboarding, every selection card, pill and checklist row gives a light tick."))
     return F

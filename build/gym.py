@@ -47,6 +47,16 @@ def frames():
         + seg("n--") + '<div class="meta-dark num" style="text-align:center">Set 1 of 3</div>' + weight_card("150","331") + reps_card("5") + quality() + footer("Log set","Skip"),
         "On set 1 of an exercise the note renders as a dismissible row under the pills; from set 2 it is behind ⓘ. Warm-up ramp (when present) stays as the collapsed soot card above the strip, as built.", dark=True, screen_style="gap:14px;padding-top:16px"))
 
+    # 08g unilateral set — the weak side leads, the strong side matches
+    F.append(frame("s8g", "08g · Session — unilateral set, the weak side leads",
+        gym_header("Max Effort Lower","3/5") + name_row("Bulgarian Split Squat","Reps over load",False) +
+        f'<div class="sootcard" style="padding:12px 14px;display:flex;gap:10px;align-items:flex-start">{ic("info",16,"#A09580",2,"margin-top:1px")}<div class="meta-dark" style="flex:1">Left side leads — start every set on it, match reps with the strong side</div>{ic("close",16,"#A09580",2)}</div>'
+        + seg("dddn---") + '<div class="meta-dark num" style="text-align:center">Set 4 of 7<span class="display" style="color:var(--chalk);font-weight:700"> · Right</span></div>'
+        + weight_card("20","44") + reps_card("10","Reps · right")
+        + '<div class="meta-dark num" style="text-align:center">Match the left side · 10</div>'
+        + quality() + prev("Set 3 · Left · 20 kg · 44 lb × 10 · solid") + footer("Log set","Skip"),
+        "<b>Per-side sets.</b> A unilateral exercise expands to one set per side, lead side first: L, R, L, R … so the strip has one segment per side-set and the count reads “of 7” (3 per side plus one extra left set during build-back). The side sits after the count in Urbanist chalk; the reps card says <b>Reps · right</b>. The pacing note is the set note on the lead side's first set, shown once. On the strong side's set the reps prefill from what the weak side just did and the small line <b>Match the left side · 10</b> says why — still editable. Prev names the side: “Set 3 · Left · 20 kg · 44 lb × 10 · solid”. The side is written on the <code>set_logs</code> row so the weekly review can pair sides and call the build-back done.", dark=True, screen_style="gap:14px;padding-top:16px"))
+
     # 09 top set
     F.append(frame("s9", "09 · Session — top set (max effort, true rep max)",
         gym_header("Max Effort Lower","1/5",False) + name_row("SSB Box Squat","Load over reps",True,True) + seg("ddn") +

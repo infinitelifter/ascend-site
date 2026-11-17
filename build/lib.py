@@ -30,17 +30,30 @@ def _mark_svg(cls, viewbox, fill_override=None):
     out = t[:body_start] + ''.join(chev) + '</svg>'
     if fill_override:
         out = re.sub(r'fill="#(545454|737373)"', f'fill="{fill_override}"', out)
+    elif "shim" not in cls and "rev" not in cls:
+        out = warm(out)
     return out, suffix
+
+# v5.1 — on light surfaces the brand greys are swapped for their Summit
+# neighbours (same map as Logo.tsx WARM). The brand file itself is untouched.
+WARM = {"545454": "#3C362B", "737373": "#77705F", "a6a6a6": "#857D6A"}
+def warm(svg):
+    return re.sub(r'fill="#(545454|737373|a6a6a6)"', lambda m: f'fill="{WARM[m.group(1)]}"', svg)
 
 def mark(width, cls="", light=True, opacity=1):
     """Static logo mark. light=True → brand greys (on paper/cream). light=False → chalk reversed variant."""
     svg, _ = _mark_svg(cls + ("" if light else " rev"), "81 92 213 123")
     return f'<div style="width:{width}px;flex:0 0 auto;opacity:{opacity}">{svg}</div>'
 
+def mark_neutral(width):
+    """The mark in the brand file's own greys — shown once, beside the warm one, for comparison."""
+    svg, _ = _mark_svg("shim", "81 92 213 123")
+    return f'<div style="width:{width}px;flex:0 0 auto">{svg}</div>'
+
 def logo_full(width):
     """The full brand logo (mark + wordmark), verbatim, as data for <img>."""
     import base64
-    b = base64.b64encode(LOGO.encode()).decode()
+    b = base64.b64encode(warm(LOGO).encode()).decode()
     return f'<img src="data:image/svg+xml;base64,{b}" width="{width}" alt="Ascend — Your Digital Coach" style="display:block">'
 
 def shimmer(width, dark=True, label=None, label_cls=None):
@@ -188,7 +201,24 @@ def card(inner, style=""):
     return f'<div class="card" style="{style}">{inner}</div>'
 
 def slab(inner, style="padding:24px"):
-    return f'<div class="slab" style="{style}">{inner}</div>'
+    return f'<div class="slab lift" style="{style}">{inner}</div>'
+
+def trend(points, w=64, h=14):
+    """TrendLine: where a training max has been this block. points = [(t 0..1, kg)]. Level bone line when held;
+    espresso line ending in a burgundy dot when it moved. Mirrors src/components/ui/TrendLine.tsx."""
+    pad = 3
+    kgs = [k for _, k in points]; lo, hi = min(kgs), max(kgs); flat = hi == lo
+    x = lambda t: pad + max(0, min(1, t)) * (w - pad * 2)
+    y = lambda k: h / 2 if flat else h - pad - (k - lo) / (hi - lo) * (h - pad * 2)
+    pts = ' '.join(f'{x(t):.1f},{y(k):.1f}' for t, k in points)
+    dot = '' if flat else f'<circle cx="{x(points[-1][0]):.1f}" cy="{y(points[-1][1]):.1f}" r="2.5" fill="#5C262B"/>'
+    return (f'<svg width="{w}" height="{h}" viewBox="0 0 {w} {h}" style="display:block"><polyline points="{pts}" fill="none" '
+            f'stroke="{"#E0D7C3" if flat else "#211E19"}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>{dot}</svg>')
+
+def settle(inner, i=0, reveal=False, style=""):
+    """Settle / Reveal as drawn on the page: fade in and rise once. i = position in a staggered group."""
+    step = 80 if reveal else 50
+    return f'<div class="{"reveal" if reveal else "settle"}" style="animation-delay:{i*step}ms;{style}">{inner}</div>'
 
 def pill(label, on=False, dark=False, style=""):
     cls = "pill" + (" pill-dark" if dark else "") + (" on" if on else "")
@@ -235,7 +265,8 @@ def gym_pill(label, icon):
     return f'<div class="gympill">{ic(icon, 16, "#A09580", 2)}{label}</div>'
 
 def fact(k, v, d, size=30):
-    return f'<div class="fact"><div class="k">{k}</div><div class="v display" style="font-size:{size}px">{v}</div><div class="d">{d}</div></div>'
+    det = f'<div class="d">{d}</div>' if d else ''
+    return f'<div class="fact"><div class="k">{k}</div><div class="v display" style="font-size:{size}px">{v}</div>{det}</div>'
 
 def section(id, title, lede, frames):
     return (f'<div class="section" id="{id}"><h2 class="display">{title}</h2><p class="lede">{lede}</p>'

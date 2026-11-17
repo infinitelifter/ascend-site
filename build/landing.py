@@ -152,6 +152,9 @@ def phone_stage(ph, cls="s78"):
 check = lambda col="#5C262B": f'<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="{col}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="5,12.5 10,17.5 19,7"/></svg>'
 cross = lambda col="#857D6A": f'<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="{col}" stroke-width="2.2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>'
 
+# The places meter. Set this to the real number of founding places taken before every deploy.
+PLACES_TAKEN = 3
+
 page = f'''<title>Ascend Founding Members</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@500;600;700&display=swap" rel="stylesheet">
@@ -162,9 +165,9 @@ page = f'''<title>Ascend Founding Members</title>
 
 <section class="hero">
   <div>
-    <div class="kicker acc">Developed with world-class coaches · 20 founding places</div>
+    <div class="kicker acc">Built on methods elite strength coaches use · 20 founding places</div>
     <h1>Stop thinking about training. Start being coached.</h1>
-    <p class="lede">Ascend writes your program, watches you lift, reads your meals and adjusts every week, the way a good coach does. Health and results without spending hours a week managing them, for people who treat the gym as non-negotiable and their time as expensive.</p>
+    <p class="lede">Ascend writes your program, checks your lifts on video, reads your meals from a photo and adjusts every week, the way a good coach does. Health and results without spending hours a week managing them, for people who treat the gym as non-negotiable and their time as expensive.</p>
     <div class="actions"><a class="lbtn" href="#apply">Ask for a founding place</a><a class="lbtn ghost" href="#how">See how it coaches</a></div>
     <div class="fine">€50 a month for the first 20, for as long as you stay. €100 after that. Cancel any month. 30-day money-back guarantee.</div>
   </div>
@@ -177,8 +180,8 @@ page = f'''<title>Ascend Founding Members</title>
   <p class="lede">Which program. Which variation this block. When to push the max and when to hold. What to eat to make it count. Most serious lifters spend more hours deciding than training, and still second-guess every top set.</p>
   <div class="three">
     <div><h3>A coach decides.</h3><p>Ascend writes your plan specifically for you, from your goal, your lifting history, your injuries, your equipment and your week. Every session, every load, every variation.</p></div>
-    <div><h3>A coach watches.</h3><p>Log a set and the loads move. Film a lift and the coach reads the bar path and your knees. Photograph a plate and the macros are read for you.</p></div>
-    <div><h3>A coach explains.</h3><p>Every Sunday: what it saw, what changed, why, and what happens next. In plain words, with the numbers in front. When life moves a session, the week reschedules intelligently around it.</p></div>
+    <div><h3>A coach watches.</h3><p>Log a top set and your loads follow. Film a lift and the coach reads the bar path, depth and your knees. Photograph a plate and the macros are read for you.</p></div>
+    <div><h3>A coach explains.</h3><p>Every week: what it saw, what changed, why, and what happens next. In plain words, with the numbers in front. Miss a session and the coach proposes a revised week for you to confirm.</p></div>
   </div>
 </section>
 
@@ -187,20 +190,21 @@ page = f'''<title>Ascend Founding Members</title>
   <h2>Facts first. Then the reasoning.</h2>
   <p class="lede">The weekly review is the heart of it. The engine decides from your logs; the tiles show what moved and the four sections say why. Nothing is hidden behind a score.</p>
   <div class="pitch">
-    <div class="lcard"><div class="kicker">Squat max</div><div class="num">160<span class="arrow">→</span>165</div><div class="d">Top set 5 × 160 kg beat the estimate three weeks running. The training max follows, capped at 5 kg a week.</div></div>
+    <div class="lcard"><div class="kicker">Squat max</div><div class="num">160<span class="arrow">→</span>165</div><div class="d">Your top set of 5 × 160 kg points to a higher max than the plan assumed. The training max follows, capped at 5 kg a week.</div></div>
     <div class="lcard"><div class="kicker">Added</div><div class="num" style="font-size:28px;margin-top:6px">Cossack Squat</div><div class="d">Right-knee cave flagged on the form check. Targeted work twice a week until two clean checks close the flag.</div></div>
     <div class="lcard"><div class="kicker">Squat volume</div><div class="num">−10%</div><div class="d">42% of squat sets were grinds. A small cut next week restores bar speed; your max stays.</div></div>
   </div>
   <div class="lslab" style="margin-top:40px">
     <div>
-      <div class="kicker">Developed with world-class coaches</div>
+      <div class="kicker">Built on methods elite strength coaches use</div>
       <h2>We have an opinion that works.</h2>
-      <p>AI where it sees, our algorithm where it decides. AI reads your lifts on video and your meals from a photo, and the coach answers when you talk to it. But what you lift, when and how much is decided by a coaching system we wrote with coaches who get people strong for a living, not by a model guessing. It takes what works across methodologies, picks a training goal and a methodology that fit you, and writes the plan for you alone: your injuries, your lifting history, your schedule, your goal. Because the decisions are rules and not a prompt, they are consistent: the same evidence gets the same sound call every time. And the coach keeps guiding you while working around your life.</p>
+      <p>AI where it sees, our algorithm where it decides. AI reads your lifts on video and your meals from a photo, and puts the weekly review into plain words. But what you lift, when and how much is decided by a coaching system we wrote from the way coaches who get people strong for a living actually program, not by a model guessing. It takes what works across methodologies, picks the one that fits your goal and experience, and writes the plan for you alone: your injuries, your lifting history, your schedule, your goal. Because the decisions are rules and not a prompt, they are consistent: the same evidence gets the same sound call every time. And the coach keeps guiding you while working around your life.</p>
       <ul>
-        <li>Several training goals and methodologies: strength, size, a meet to peak for, a comeback after an injury. The coach picks and adapts.</li>
+        <li>Five training goals: general strength, powerlifting, strongman, size, or strength for another sport, with or without a date to peak for. The coach picks the method and adapts it.</li>
+        <li>An injury that still limits you is planned around: fixed depth, capped loads, the weaker side leading until it catches up.</li>
         <li>Loads come from your training max, never from how you feel today. No RPE guesswork.</li>
-        <li>A max moves at most 5 kg (about 10 lb) a week, and only when a logged top set earns it.</li>
-        <li>Miss a day and the week reschedules itself. Report pain and the next sessions swap around it. Get sick and the week compresses, then re-enters gently.</li>
+        <li>A max moves at most 5 kg (about 10 lb) a week, and only when your logged sets earn it.</li>
+        <li>Miss a day and the coach proposes a revised week; nothing changes until you confirm. Report pain and the next sessions swap around it. Tell it you are sick and the week reflows, with a lighter week to come back on after a longer break.</li>
         <li>Changes land on upcoming sessions only. Your history is never rewritten.</li>
       </ul>
     </div>
@@ -211,10 +215,10 @@ page = f'''<title>Ascend Founding Members</title>
 <section class="section">
   <div class="kicker">In the gym</div>
   <h2>Weight. Reps. How it moved. Log.</h2>
-  <p class="lede">Gym mode shows four things and nothing else. Every set is one tap, every top set is a test the coach reads that night.</p>
+  <p class="lede">Gym mode shows four things and nothing else. Every set is one tap, and every top set is a test the coach reads on the spot.</p>
   <div class="four" style="align-items:start">
     <div>{phone_stage(ph_gym, "s62")}<h3 style="margin-top:14px">Nothing to think about</h3><p>The loads are set. Your job is the bar.</p></div>
-    <div>{phone_stage(ph_form, "s62")}<h3 style="margin-top:14px">A coach's eyes on every lift</h3><p>Film 15 seconds; the coach reads bar path, depth and your knees, and the plan reacts: a flag becomes targeted work in your next sessions.</p></div>
+    <div>{phone_stage(ph_form, "s62")}<h3 style="margin-top:14px">A coach's eyes on your lifts</h3><p>Film up to 15 seconds; the coach reads bar path, depth and your knees, and the plan reacts: at the next weekly review a flag becomes targeted work in your sessions.</p></div>
     <div>{phone_stage(ph_coach, "s62")}<h3 style="margin-top:14px">The coach holds the plan</h3><p>The next seven days, what the coach did and why, and where each lift is going.</p></div>
     <div>{phone_stage(ph_nut, "s62")}<h3 style="margin-top:14px">Food, counted for you</h3><p>Targets computed from your goal and weight trend; meals logged from a photo.</p></div>
   </div>
@@ -222,11 +226,11 @@ page = f'''<title>Ascend Founding Members</title>
 
 <section class="section">
   <div class="kicker">Who it is for</div>
-  <h2>Twenty people who train four days a week and want to stop managing it.</h2>
+  <h2>Twenty people who train three to five days a week and want to stop managing it.</h2>
   <div class="who">
     <div class="col"><div class="kicker acc">Yes, if</div><ul>
       <li>{check()}You squat, bench, deadlift or press. Kilograms or pounds, your choice.</li>
-      <li>{check()}You train in a gym with a barbell, three or four days a week, and will log every session.</li>
+      <li>{check()}You train with a barbell, in a gym or at home, three to five days a week, and will log every session.</li>
       <li>{check()}You have had a coach, or wanted one, and know what a good one is worth.</li>
       <li>{check()}You want one source of truth for training and food, not five apps.</li>
     </ul></div>
@@ -234,20 +238,20 @@ page = f'''<title>Ascend Founding Members</title>
       <li>{cross()}You want a workout generator for a hotel gym.</li>
       <li>{cross()}You train by feel and do not want to log.</li>
       <li>{cross()}You are on Android (iPhone only for the founding block).</li>
-      <li>{cross()}You are not cleared to train by a doctor. A comeback after an injury is a goal the coach handles, but only once you are cleared.</li>
+      <li>{cross()}You are not cleared to train by a doctor. The coach plans around an injury that still limits you, but only once you are cleared.</li>
     </ul></div>
   </div>
 </section>
 
 <section class="section" id="price">
   <div class="kicker">Founding members</div>
-  <h2>A coach who sees every set, for a third of what a coach costs. Half that for the first twenty.</h2>
+  <h2>A coach who sees every set, for less than a coach costs. Half that for the first twenty.</h2>
   <div class="price">
     <div class="lcard on">
       <div class="kicker">Founding place · 20 only</div>
       <div class="big">€50<small> / month</small></div>
-      <div class="places" aria-label="places taken">{''.join('<i class="on"></i>' if i < 3 else '<i></i>' for i in range(20))}</div>
-      <div class="muted">3 of 20 taken · price locked for as long as you stay</div>
+      <div class="places" aria-label="places taken">{''.join('<i class="on"></i>' if i < PLACES_TAKEN else '<i></i>' for i in range(20))}</div>
+      <div class="muted">{PLACES_TAKEN} of 20 taken · price locked for as long as you stay</div>
       <div style="border:1px solid var(--slab-line);border-radius:12px;padding:12px 14px;font-size:14px;line-height:1.45"><b>30 days, money back.</b> Train with the coach for a month and log your sessions. If it has not earned its place, say so and I refund the month.</div>
       <ul>
         <li>The full coach: program, gym mode, form check, nutrition, weekly review</li>
@@ -266,7 +270,7 @@ page = f'''<title>Ascend Founding Members</title>
         <li>Standard support</li>
         <li>Cancel any month</li>
       </ul>
-      <div class="muted" style="margin-top:auto;font-size:13px">A personal strength coach at this level costs €150–300 a month, sees you once a week, and answers when they can. Ascend sees every set, answers at once, reschedules the week when yours changes, and never has a waiting list.</div>
+      <div class="muted" style="margin-top:auto;font-size:13px">A personal strength coach at this level costs €150–300 a month, sees you once a week, and answers when they can. Ascend sees every set you log, reacts the same day, proposes a new week when yours changes, and never has a waiting list.</div>
     </div>
   </div>
 </section>
@@ -297,8 +301,8 @@ page = f'''<title>Ascend Founding Members</title>
 
 <footer>
   <div class="brand" style="font-family:var(--display);font-weight:700;letter-spacing:.14em;text-transform:uppercase;display:flex;align-items:center;gap:10px">{mark(22)}Ascend</div>
-  <p class="legal">Ascend is a training tool. It writes programs and adjusts them from the data you log; it does not diagnose, treat or replace advice from a physician or physiotherapist. Lifting heavy carries a risk of injury. Train within your ability, stop when something hurts, and get cleared by a doctor before starting if you have a condition or a recent injury. By using Ascend you accept the Terms of Use and the Health &amp; Safety acknowledgement shown in the app.</p>
-  <p class="legal">© 2026 Full Canvas Digital s.r.o., Prague · <a href="/terms">Terms</a> · Privacy · Contact</p>
+  <p class="legal">Ascend is a training tool. It writes programs and adjusts them from the data you log; it does not diagnose, treat or replace advice from a physician or physiotherapist. Lifting heavy carries a risk of injury. Train within your ability, stop when something hurts, and get cleared by a doctor before starting if you have a condition or a recent injury. By using Ascend you accept the <a href="/terms">training terms</a>.</p>
+  <p class="legal">© 2026 Full Canvas Digital, operated by Ondrej Meszaros, Prague · <a href="/terms">Terms</a> · Privacy · Contact</p>
 </footer>
 </div>
 
@@ -339,7 +343,7 @@ SITE = "https://ascendstrength.app"  # change when the domain changes; also in r
 os.makedirs(os.path.join(root, 'preview'), exist_ok=True)
 open(os.path.join(root, 'preview', 'ascend-landing.html'), 'w').write(page.replace('href="/terms"', f'href="{SITE}/terms"'))
 # 2) index.html — the deployable site: a complete document for Vercel
-DESC = "A strength coach in your pocket: your program written for you, every lift watched, every meal read, adjusted weekly. 20 founding places."
+DESC = "A strength coach in your pocket: your program written for you, your lifts checked on video, your meals read from a photo, adjusted weekly. 20 founding places."
 standalone = ('<!doctype html><html lang="en"><head><meta charset="utf-8">'
   '<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">'
   f'<meta name="description" content="{DESC}">'
@@ -350,7 +354,7 @@ standalone = ('<!doctype html><html lang="en"><head><meta charset="utf-8">'
   '<link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="manifest" href="/site.webmanifest">'
   + f'<link rel="canonical" href="{SITE}/"><meta property="og:url" content="{SITE}/"><meta property="og:image" content="{SITE}/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">'
   + '<meta name="twitter:card" content="summary_large_image"><meta property="og:site_name" content="Ascend"><meta name="robots" content="index,follow">'
-  + '<script type="application/ld+json">' + json.dumps({"@context":"https://schema.org","@type":"SoftwareApplication","name":"Ascend","applicationCategory":"HealthApplication","operatingSystem":"iOS","description":DESC,"url":SITE,"offers":[{"@type":"Offer","name":"Founding place","price":"50","priceCurrency":"EUR","billingIncrement":"P1M","availability":"https://schema.org/LimitedAvailability"},{"@type":"Offer","name":"Standard","price":"100","priceCurrency":"EUR","billingIncrement":"P1M"}],"publisher":{"@type":"Organization","name":"Full Canvas Digital s.r.o.","address":{"@type":"PostalAddress","addressLocality":"Prague","addressCountry":"CZ"}}}) + '</script>'
+  + '<script type="application/ld+json">' + json.dumps({"@context":"https://schema.org","@type":"SoftwareApplication","name":"Ascend","applicationCategory":"HealthApplication","operatingSystem":"iOS","description":DESC,"url":SITE,"offers":[{"@type":"Offer","name":"Founding place","price":"50","priceCurrency":"EUR","billingIncrement":"P1M","availability":"https://schema.org/LimitedAvailability"},{"@type":"Offer","name":"Standard","price":"100","priceCurrency":"EUR","billingIncrement":"P1M"}],"publisher":{"@type":"Organization","name":"Full Canvas Digital","address":{"@type":"PostalAddress","addressLocality":"Prague","addressCountry":"CZ"}}}) + '</script>'
   + page.replace('<title>Ascend Founding Members</title>', '<title>Ascend, a strength coach in your pocket</title>', 1)
   + '</body></html>')
 standalone = standalone.replace('</style>\n\n<div class="wrap">', '</style></head><body>\n<div class="wrap">', 1)

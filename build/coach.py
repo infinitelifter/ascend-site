@@ -104,7 +104,7 @@ def tl_feed(inner):
 
 # ── Final (C, 2026-10-05): slab for this week, boxes for the facts, a railed timeline for history, where you're going at the bottom ──
 def c_slab(kicker, headline, body, foot):
-    return (f'<div class="slab" style="padding:20px 22px"><div class="label-dark" style="color:var(--burgundy-lt);margin-bottom:10px">{kicker}</div>'
+    return (f'<div class="slab lift" style="padding:20px 22px"><div class="label-dark" style="color:var(--burgundy-lt);margin-bottom:10px">{kicker}</div>'
             f'<div class="display" style="font-size:24px;font-weight:600;line-height:1.2;margin-bottom:8px">{headline}</div>'
             f'<div style="font-size:14px;line-height:1.5;color:var(--dbody);font-weight:500">{body}</div>'
             f'<div style="display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding-top:12px;border-top:1px solid var(--darkline)"><div class="meta-dark">{foot}</div>{ic("chev-right",16,"#A09580")}</div></div>')
@@ -154,9 +154,12 @@ def c_lifts(rows):
     """Where you're going, reduced to the four lift rows; the block position lives in the header kicker."""
     def r(name, tm, lb, since, nxt, last=False):
         mv = f'<span style="color:var(--burgundy);font-weight:700"> {since}</span>' if since else ''
+        # v5.1 — the trend line under the max: level when held, a rise ending in the burgundy dot when it moved
+        when = {"Squat": .86, "Deadlift": .42, "Press": .7}.get(name, .6)
+        tl = trend([(0, 0), (when, 1), (1, 1)] if since else [(0, 1), (1, 1)])
         return (f'<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;{"" if last else "border-bottom:1px solid var(--bone)"}">'
                 f'<div style="min-width:0"><div style="font-size:15px;font-weight:700">{name}{mv}</div><div class="num" style="font-size:12px;color:var(--faint);margin-top:2px;font-weight:500">{nxt}</div></div>'
-                f'<div class="display num" style="font-size:20px;font-weight:700;text-align:right;white-space:nowrap">{tm}<span style="font-size:11px;color:var(--faint);font-weight:600;font-family:var(--body)"> kg · {lb} lb</span></div></div>')
+                f'<div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px"><div class="display num" style="font-size:20px;font-weight:700;line-height:23px;text-align:right;white-space:nowrap">{tm}<span style="font-size:11px;color:var(--faint);font-weight:600;font-family:var(--body)"> kg · {lb} lb</span></div>{tl}</div></div>')
     body = ''.join(r(*row, last=(i == len(rows) - 1)) for i, row in enumerate(rows))
     return f'<div style="margin-top:22px"><div class="label-faint" style="margin-bottom:10px">Where you’re going</div><div class="card" style="padding:2px 18px">{body}</div></div>'
 
@@ -183,7 +186,7 @@ def frames():
         c_lifts([("Squat","165","364","+5 this block","next top set today · SSB Box Squat"),("Bench","110","243","","no top set this week · held"),("Deadlift","202.5","446","+2.5","speed pull Sat · no test"),("Press","62.5","138","+2.5","next top set Thu · Apollon OHP")]) +
         c_earlier("4 entries this block · last Thu 02.07") +
         f'<div style="flex:1"></div>{tabbar("coach")}',
-        "<b>Four things, nothing twice.</b> The strip; the coach on the slab — this week in two sentences plus today's framing, the foot line carrying the headline number (“3 changes · squat max 160 → 165”), tap → the review where the fact tiles and the four sections live; <i>where you're going</i> as the four lift rows (max · kg · lb · the move this block in burgundy · the next top set that can move it); and the history collapsed to one row. The block position moved into the header kicker (“Week 2 of 12 · deload in week 3”; the methodology name lives on Full plan, the event countdown joins the kicker when peaking), so the separate block card is gone. Everything from the previous draft is still one tap away.", screen_style="padding-bottom:0"))
+        "<b>Four things, nothing twice.</b> The strip; the coach on the slab — this week in two sentences plus today's framing, the foot line carrying the headline number (“3 changes · squat max 160 → 165”), tap → the review where the fact tiles and the four sections live; <i>where you're going</i> as the four lift rows (max · kg · lb · the move this block in burgundy · the next top set that can move it); and the history collapsed to one row. The block position moved into the header kicker (“Week 2 of 12 · deload in week 3”; the methodology name lives on Full plan, the event countdown joins the kicker when peaking), so the separate block card is gone. Everything from the previous draft is still one tap away. <b>v5.1:</b> Each lift row carries a 64×14 trend line under its max — where the training max has been this block, rebuilt from the ledger; a level bone line when held, an espresso line ending in a burgundy dot when it moved. No axes, no animation. The slab gets the one shadow in the app; the four parts settle in once, 50 ms apart.", screen_style="padding-bottom:0"))
 
     F.append(frame("s10a", "10a · Coach — Earlier, expanded",
         '<div style="margin-top:-6px">' + c_lifts([("Squat","165","364","+5 this block","next top set today · SSB Box Squat"),("Bench","110","243","","no top set this week · held"),("Deadlift","202.5","446","+2.5","speed pull Sat · no test"),("Press","62.5","138","+2.5","next top set Thu · Apollon OHP")]) + c_earlier("4 entries this block · last Thu 02.07", open_=True) +

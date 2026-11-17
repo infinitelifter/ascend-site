@@ -67,6 +67,22 @@ body{background:var(--page);color:var(--chalk);font-family:var(--body);-webkit-f
 
 .card{background:var(--cream);border:1px solid var(--bone);border-radius:18px}
 .slab{background:var(--charcoal);border-radius:20px;color:var(--chalk)}
+/* v5.1 — the only shadow in the app: the espresso slab sits a little above the page */
+.slab.lift{box-shadow:0 10px 18px rgba(33,30,25,.16)}
+/* v5.1 — motion: fade in and rise, once; timing curve only, nothing bounces */
+@keyframes settle{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes reveal{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes fillbar{from{transform:translateX(-100%)}to{transform:none}}
+.settle{animation:settle .26s cubic-bezier(.33,1,.68,1) both}
+.reveal{animation:reveal .34s cubic-bezier(.33,1,.68,1) both}
+.motion-demo .settle,.motion-demo .reveal{animation-iteration-count:infinite;animation-duration:3.2s}
+.motion-demo .settle{animation-name:settle-loop}.motion-demo .reveal{animation-name:reveal-loop}
+@keyframes settle-loop{0%{opacity:0;transform:translateY(8px)}8%,90%{opacity:1;transform:none}100%{opacity:0;transform:none}}
+@keyframes reveal-loop{0%{opacity:0;transform:translateY(10px)}11%,90%{opacity:1;transform:none}100%{opacity:0;transform:none}}
+.fillbar{height:4px;background:var(--bone);border-radius:3px;overflow:hidden}
+.fillbar>div{height:100%;background:var(--charcoal);border-radius:3px;animation:fillbar-loop 3.2s cubic-bezier(.33,1,.68,1) infinite}
+@keyframes fillbar-loop{0%,4%{transform:translateX(-100%)}22%,90%{transform:none}100%{transform:translateX(-100%)}}
+@media (prefers-reduced-motion:reduce){.settle,.reveal,.fillbar>div{animation:none!important}}
 .sootcard{background:var(--soot);border:1px solid var(--darkline);border-radius:20px}
 
 .sel-card{background:var(--cream);border:1px solid var(--bone);border-radius:16px;padding:18px;display:flex;align-items:center;justify-content:space-between}

@@ -10,6 +10,7 @@ def intro():
         ("6 · The logo is the loader", "A soft band of light crosses the logo mark every 1.6 s — <code>LogoShimmer</code> replaces the three dots in all 13 places. Inside a button the same band crosses the button and the fill stays (no more chalk dots on bone)."),
         ("7 · The unhappy paths are drawn", "Offline Today, no program, session not cached, meal photo failed, targets failed, logging gated, form check failed, nudge buttons that stack properly, sheets with a handle. Nine frames the first device test would have wanted."),
         ("8 · Contrast, icons, copy", "<code>faint</code> #A99F8A → #857D6A (2.5:1 → 3.9:1 on cream). One 2 px stroke icon family (18 glyphs) replaces › ✓ ◉ ⇄ ↗ ← × ⏱. Distinct tab icons. “floor” leaves the UI in four places; macro columns get their unit; lb appears wherever kg stood alone."),
+        ("9 · Motion, touch, warmth — v5.1", "Added 17 November. The daylight screens no longer just appear: content <b>settles</b> (fades in, rises 8 pt, once), bars <b>fill from zero</b>, the review’s fact tiles and the first-block screen <b>reveal</b> in turn. A light <b>tick</b> on onboarding selections, Continue and tab changes. The logo is warm on light surfaces, the slab gets the one shadow in the app, the Coach tab gains a <b>trend line</b> per lift, and the paywall leads with a sample week. Opacity and transform only, timing curves only, still under Reduce Motion."),
     ]
     b = ''.join(f'<div class="box"><h4>{t}</h4><p>{p}</p></div>' for t, p in boxes)
     return (f'<div class="section" id="why"><h2 class="display">Summit v5 — the app as built, lit better</h2>'
@@ -45,6 +46,27 @@ def system():
              f'<div class="comp"><div class="cn">Pills · tags · quality (gym 46)</div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">{pill("75 min")}{pill("90 min",True)}{pill("Clear view",style="height:30px;font-size:12px")}</div><div style="background:#211E19;border-radius:14px;padding:12px;display:flex;gap:8px">{pill("Easy",False,True,"flex:1;height:46px;font-size:15px;border-radius:23px")}{pill("Solid",True,True,"flex:1;height:46px;font-size:15px;border-radius:23px")}{pill("Grind",False,True,"flex:1;height:46px;font-size:15px;border-radius:23px")}</div></div>'
              f'<div class="comp"><div class="cn">Tab bar — words only, index mark</div><div style="background:#F4EFE4;border-top:1px solid #E0D7C3;margin:0 -22px -22px;padding:10px 12px 18px">{TAB}</div></div>'
              f'</div>')
+    demo_tiles = ''.join(settle(fact(k, v, d), i, reveal=True, style="flex:1;min-width:0;display:flex") for i, (k, v, d) in enumerate([("Squat max","160<span class=arrow>→</span>165","top set 5 × 160 kg"),("Squat volume","−10%","42% of sets were grinds")]))
+    motion_rows = [
+        ("<code>Settle</code>", "Today · Coach · Nutrition hero · review header and sections · paywall", "opacity 0 → 1, rise 8 pt, 260 ms, ease-out cubic; 50 ms stagger, capped at six. Once per mount — never on refetch."),
+        ("<code>Reveal</code>", "Review fact tiles (21) · first-block screen (05f)", "opacity 0 → 1, rise 10 pt, 340 ms, 80 ms apart. The two earned moments."),
+        ("<code>FillBar</code>", "Today’s calorie and protein cards · Nutrition calorie hero", "fills from zero in 520 ms after a 140 ms beat, then follows its value. A full-width bar translated into place — transform only."),
+        ("<code>tick()</code>", "Selection cards, pills, checklist rows · every onboarding Continue · tab change (tap or swipe)", "<code>Haptics.selectionAsync</code>. Gym mode and the sheets keep their own heavier impacts; nothing fires twice."),
+        ("<code>uiStyles.slabShadow</code>", "The espresso slab on Today, Coach and the Nutrition hero", "espresso (never black) at 16%, 18 pt blur, 10 pt down. The only shadow in the app."),
+        ("<code>TrendLine</code>", "Coach · Where you’re going", "64 × 14, 1.5 pt espresso line, 2.5 pt burgundy end dot; level bone line when held. Built by <code>buildDirection</code> from the ledger."),
+        ("<code>Logo</code> warm", "Every light surface (sign-in, watermarks, 05f, the loader’s base)", "#545454 → darkline #3C362B · #737373 → taupe #77705F · #a6a6a6 → faint #857D6A. <code>neutral</code> restores the brand greys; the chalk reversal is unchanged."),
+    ]
+    mr = ''.join(f'<tr><td>{a}</td><td>{b}</td><td>{c}</td></tr>' for a, b, c in motion_rows)
+    demo_slab = settle('<div class="slab lift" style="padding:16px 18px"><div class="label-dark" style="margin-bottom:6px">Rest</div><div class="display" style="font-size:20px;font-weight:600">Recovery is part of the program.</div></div>', 0)
+    demo_card = settle('<div class="card" style="padding:12px 16px;margin-top:12px"><div class="label" style="color:#5C262B;margin-bottom:4px">Coach · weekly review</div><div style="font-size:14px;font-weight:700">Your coaching review is ready</div></div>', 2)
+    t_moved = trend([(0, 0), (.86, 1), (1, 1)]); t_held = trend([(0, 1), (1, 1)])
+    motion = (f'<div class="grid motion-demo">'
+              f'<div class="comp"><div class="cn">Reveal — fact tiles, 80 ms apart (looped here; once in the app)</div><div style="display:flex;gap:10px">{demo_tiles}</div></div>'
+              f'<div class="comp"><div class="cn">Settle — slab first, cards after</div>{demo_slab}{demo_card}</div>'
+              f'<div class="comp"><div class="cn">FillBar — from zero, then follows the value</div><div class="card" style="padding:16px"><div class="label-faint">Calories</div><div class="display num" style="font-size:26px;font-weight:700;margin-top:6px">1,780<span style="font-size:13px;color:var(--faint);font-weight:600;font-family:var(--body)"> / 2,340</span></div><div class="fillbar" style="margin-top:10px"><div style="width:76%"></div></div></div></div>'
+              f'<div class="comp"><div class="cn">TrendLine — moved · held &nbsp;·&nbsp; Logo — warm · brand greys</div><div class="card" style="padding:14px 18px;display:flex;align-items:center;justify-content:space-between"><div style="display:flex;gap:26px;align-items:center">{t_moved}{t_held}</div><div style="display:flex;gap:18px;align-items:center">{mark(64)}{mark_neutral(64)}</div></div></div>'
+              f'</div>'
+              f'<div class="wrap" style="margin-top:18px"><table class="map"><tr><th>Piece</th><th>Where</th><th>Spec</th></tr>{mr}</table></div>')
     copy_rows = [
         ("weakpoints.ts", "Off the floor", "Off the ground"),
         ("nutrition.ts", "already at the calorie floor · at the calorie floor (BMR × 1.1)", "already at the calorie minimum · at the calorie minimum (BMR × 1.1)"),
@@ -66,6 +88,7 @@ def system():
             f'<h3>Icons — 2 px round stroke, 24 box, the chevron’s hand</h3><div class="icons">{icons}</div>'
             f'<h3>The loader</h3>{loaders}'
             f'<h3>Components that change</h3>{comps}'
+            f'<h3>Motion, touch, warmth — v5.1</h3>{motion}'
             f'<h3>Copy fixes shipped with v5</h3><div class="wrap"><table class="map"><tr><th>Where</th><th>Today</th><th>v5</th></tr>{cr}</table></div>'
             f'</div></div>')
 
@@ -80,6 +103,7 @@ def impl():
         ("7", "<b>Today + nudges + plan</b>: CoachCard kicker+headline; Settings icon; tab icons; nudge actions stacked; no-program slab actions; deload watermark on Plan/Today; chevrons/checks as icons; Plan no-program busy/warn without alerts.", "(tabs)/index.tsx · NudgeCards.tsx · plan.tsx · _layout.tsx", "~2.5 h"),
         ("8", "<b>Nutrition + sheets</b>: sheet handle on all 7 sheets; macro units; weight pill lb; due-card copy; form-check view-quality tag + finding detail + Try again; upload chooser sheet; copy fixes table; Settings email + Manage subscription row.", "nutrition.tsx · sheets/* · form-check.tsx · settings.tsx", "~3 h"),
         ("9", "<b>Design sync + docs</b>: v5 brief, How-It-Works §UI, defect ledger entries, screenshots on device; 446 tests + new pure tests for reviewFacts and rail totals.", "design-v5/* · docs/*", "~1.5 h"),
+        ("10", "<b>Motion, touch, warmth (v5.1, 2026-11-17).</b> <code>Motion.tsx</code> (<code>Settle</code>, <code>Reveal</code>, <code>FillBar</code>, <code>tick</code>, <code>MOTION</code>); <code>TrendLine.tsx</code>; <code>uiStyles.slabShadow</code>; <code>AscendButton haptic</code>; ticks in <code>Pill</code>, <code>PillDark</code>, <code>SelectionCard</code>, <code>CheckRow</code>, <code>TabBar</code>; warm <code>Logo</code> with <code>neutral</code>; <code>buildDirection</code> returns <code>trend</code> per lift (tested); paywall proof tiles.", "ui/Motion.tsx · ui/TrendLine.tsx · ui/index.tsx · ui/Logo.tsx · ui/TabBar.tsx · (tabs)/* · coach-review.tsx · paywall.tsx · (onboarding)/* · lib/coachFeed.ts", "done"),
     ]
     r = ''.join(f'<tr><td>{a}</td><td>{b}</td><td><code>{c}</code></td><td>{d}</td></tr>' for a, b, c, d in rows)
     return (f'<div class="section" id="impl" style="padding-bottom:120px"><h2 class="display">Into code</h2><p class="lede">Nine chunks, each a commit, each leaving the app shippable. Roughly 22 hours; the gym-mode chunk is the one to review on the phone before the rest.</p>'

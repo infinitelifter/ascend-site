@@ -20,7 +20,7 @@ npx vercel --prod
 Domain: Vercel → Project → Settings → Domains → add; at the registrar, A `@` → 76.76.21.21, CNAME `www` → cname.vercel-dns.com.
 
 ## Before sharing the link
-- Replace `hello@ascend.coach` (two places in `build/landing.py`) and set the places meter honestly (`i < 3`, "3 of 20 taken").
-- Fill in the operator placeholder (`[OPERATOR LEGAL NAME, ID NUMBER, ADDRESS]`) in `legal/training-terms.md` and run `python3 build/terms.py`. The application form asks people to accept these terms.
+- Replace `hello@ascend.coach` (two places in `build/landing.py`) and set the places meter honestly (`PLACES_TAKEN` at the top of the page in `build/landing.py`).
+- Fill in the rest of the operator line (`[ID NUMBER, REGISTERED ADDRESS]`) in `legal/training-terms.md` and run `python3 build/terms.py`. The application form asks people to accept these terms.
 - The footer Terms link goes to `/terms`. Privacy and Contact point nowhere yet.
 - Resend's default sender delivers only to the account's own email; verify the domain in Resend → Domains and set `APPLY_FROM` to `Ascend <apply@yourdomain>` once you have it.

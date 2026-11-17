@@ -76,7 +76,7 @@ doc = ('<!doctype html><html lang="en"><head><meta charset="utf-8">'
   f'<main class="terms">\n{md_to_html(md)}\n</main>\n'
   '<footer>\n'
   f'  <div class="brand" style="font-family:var(--display);font-weight:700;letter-spacing:.14em;text-transform:uppercase;display:flex;align-items:center;gap:10px">{mark(22)}Ascend</div>\n'
-  '  <p class="legal">© 2026 Full Canvas Digital s.r.o., Prague · <a href="/terms">Terms</a> · Privacy · Contact</p>\n'
+  '  <p class="legal">© 2026 Full Canvas Digital, operated by Ondrej Meszaros, Prague · <a href="/terms">Terms</a> · Privacy · Contact</p>\n'
   '</footer>\n'
   '</div>\n</body></html>\n')
 open(os.path.join(root, 'terms.html'), 'w', encoding='utf-8').write(doc)
